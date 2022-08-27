@@ -25,9 +25,12 @@ https://getbootstrap.com/docs/5.2/layout/grid/
 https://getbootstrap.com/docs/5.2/layout/columns/
 
 растояние между колонками
+<div class = "gx - 5 gy - 7"></div> делает отступы между элементами по оси y и x
 https://getbootstrap.com/docs/5.2/layout/gutters/
 
-
+Компоненты
+1 Buttons
+<button class="btn btn-primary"></button>
 
 
 
