@@ -9,10 +9,109 @@
       rel="stylesheet"
       href="../node_modules/bootstrap/dist/css/bootstrap.css"
     />
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="container-md border text-center">Привет как твои дела ?</div>
-    <button class="btn btn-primary">Привет как дела ?</button>
+    <header>
+      <div
+        class="container bg-dark d-flex justify-content-around"
+        style="width: 400px"
+      >
+        <button class="btn btn-primary mt-2 mb-2">Sign in</button>
+        <button class="btn btn-primary mt-2 mb-2">Sign up</button>
+      </div>
+      <!-- добавить падинги-->
+    </header>
+
+    <div
+      class="container d-flex flex-column text-center p-0"
+      style="width: 400px"
+    >
+      <form>
+        <div class="SignUp_Wrapper text-center bg-secondary">
+          <h3 class="pt-3 text-white">Регестрация</h3>
+          <!-- Login -->
+          <label for="Login" class="form-label mt-3"
+            ><h5 class="text-white">Логин</h5></label
+          >
+          <input
+            type="text"
+            class="form-control mx-auto"
+            name="Login"
+            placeholder="Login"
+            id="Login"
+            style="width: 200px"
+          />
+          <!-- Password-->
+          <label for="Password" class="form-label mt-3"
+            ><h5 class="text-white">Пароль</h5></label
+          >
+          <input
+            type="password"
+            class="form-control mx-auto"
+            name="Password"
+            placeholder="Enter password"
+            id="Password"
+            style="width: 200px"
+          />
+          <!-- Repeat Password-->
+          <label for="RepeatPassword" class="form-label mt-3"
+            ><h5 class="text-white">Повторите пароль</h5></label
+          >
+          <input
+            type="password"
+            class="form-control mx-auto"
+            name="RepeatPassword"
+            placeholder="Repeat password"
+            id="RepeatPassword"
+            style="width: 200px"
+          />
+          <label for="Email" class="form-label mt-3"
+            ><h5 class="text-white">Электронная почта</h5></label
+          >
+          <!-- Email-->
+          <input
+            type="email"
+            class="form-control mx-auto"
+            name="Email"
+            placeholder="Email"
+            id="Email"
+            style="width: 200px"
+          />
+          <button class="btn btn-primary mt-3 mb-3" type="submit">
+            Зарегистрироваться
+          </button>
+        </div>
+      </form>
+      <form>
+        <div class="SignIn_Wrapper text-center bg-secondary">
+          <h3 class="pt-3 text-white">Войти</h3>
+          <label for="Login" class="form-label mt-3"
+            ><h5 class="text-white">Логин или Электронная почта</h5></label
+          >
+          <input
+            type="text"
+            name="Login"
+            placeholder="Username or email address"
+            id="Login"
+            class="form-control mx-auto"
+            style="width: 200px"
+          />
+          <label for="Password" class="form-label mt-3"
+            ><h5 class="text-white">Пароль</h5></label
+          >
+          <input
+            type="password"
+            name="Password"
+            placeholder="Enter password"
+            id="Password"
+            class="form-control mx-auto"
+            style="width: 200px"
+          />
+          <button class="btn btn-primary mt-3 mb-3" type="submit">Войти</button>
+        </div>
+      </form>
+    </div>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
   </body>
 </html>
