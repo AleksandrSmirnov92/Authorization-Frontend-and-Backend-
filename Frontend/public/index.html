@@ -31,7 +31,7 @@
       class="container d-flex flex-column text-center p-0"
       style="width: 400px"
     >
-      <form>
+      <form id="Form1">
         <div class="SignUp_Wrapper text-center bg-secondary d-none">
           <h3 class="pt-3 text-white">Регестрация</h3>
           <!-- Login -->
@@ -45,8 +45,9 @@
             placeholder="Login"
             id="Login"
             style="width: 200px"
-            required
           />
+          <!--Error Login-->
+          <div class="text-warning" id="Error_Login"></div>
           <!-- Password-->
           <label for="Password" class="form-label mt-3"
             ><h5 class="text-white">Пароль</h5></label
@@ -58,8 +59,9 @@
             placeholder="Enter password"
             id="Password"
             style="width: 200px"
-            required
           />
+          <!--Error Password-->
+          <div id="Error_Password"></div>
           <!-- Repeat Password-->
           <label for="RepeatPassword" class="form-label mt-3"
             ><h5 class="text-white">Повторите пароль</h5></label
@@ -71,11 +73,12 @@
             placeholder="Repeat password"
             id="RepeatPassword"
             style="width: 200px"
-            required
           />
           <label for="Email" class="form-label mt-3"
             ><h5 class="text-white">Электронная почта</h5></label
           >
+          <!--Error Repeat Password-->
+          <div id="Error_Repeat_Password"></div>
           <!-- Email-->
           <input
             type="email"
@@ -84,9 +87,14 @@
             placeholder="Email"
             id="Email"
             style="width: 200px"
-            required
           />
-          <button class="btn btn-primary mt-3 mb-3" type="submit">
+          <!--Error Email-->
+          <div id="Error_Email"></div>
+          <button
+            class="btn btn-primary mt-3 mb-3"
+            id="button_submit"
+            type="submit"
+          >
             Зарегистрироваться
           </button>
         </div>
@@ -106,6 +114,7 @@
             style="width: 200px"
             required
           />
+          <div id="Error_Login"></div>
           <label for="Password" class="form-label mt-3"
             ><h5 class="text-white">Пароль</h5></label
           >
@@ -118,6 +127,7 @@
             style="width: 200px"
             required
           />
+          <div id="Error_Password"></div>
           <button class="btn btn-primary mt-3 mb-3" type="submit">Войти</button>
         </div>
       </form>
