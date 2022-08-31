@@ -8,26 +8,11 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
-  console.log(
-    path.join(
-      __dirname,
-      "../../Frontend/node_modules/bootstrap/dist/css/",
-      "bootstrap.css"
-    )
-  );
+  console.log(path.join(__dirname, "../../Frontend/public/"));
   next();
 });
-app.use(
-  express.static(
-    path.join(__dirname, "../../Frontend/node_modules/bootstrap/dist/css/")
-  )
-);
-app.use(express.static("/../../Frontend/public"));
-app.use(
-  express.static(
-    path.join(__dirname, "../../Frontend/node_modules/bootstrap/dist/js/")
-  )
-);
+app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
+// app.use(express.static("/../../Frontend/public"));
 const port = 3000;
 app.use("/", formsRouter);
 // app.use("/", homePageRouter);
