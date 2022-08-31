@@ -5,9 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Homepage</title>
+    <link
+      rel="stylesheet"
+      href="../node_modules/bootstrap/dist/css/bootstrap.css/"
+    />
   </head>
   <body>
-    <header></header>
-    <main></main>
+    <header>
+      <div
+        class="container bg-dark d-flex justify-content-center"
+        style="width: 400px"
+      >
+        <button class="btn btn-danger mt-2 mb-2 button_back">Back</button>
+      </div>
+    </header>
+    <div
+      class="container d-flex flex-column text-center p-0 bg-secondary"
+      style="width: 400px"
+    >
+      <h4 class="text-white">Поздравляю вы зарегестрировались</h4>
+      <h4 class="text-warning nameUser">Sasha</h4>
+    </div>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="./homepage.js"></script>
   </body>
 </html>

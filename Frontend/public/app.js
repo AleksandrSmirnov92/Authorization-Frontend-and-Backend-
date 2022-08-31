@@ -59,6 +59,7 @@ button_submit2.addEventListener("submit", (e) => {
     formValidationSignUp(LoginAndEmail, PasswordSignUp);
     let include = state.valuesTrueSignIn.includes(false);
 });
+// --------------------------------------------------Function-----------------------------------------------------
 function activate_SignIn_or_Sign_up() {
     if (state.nameClassButton === "Sign_up") {
         FormSignIn.classList.remove("d-none");
@@ -69,6 +70,7 @@ function activate_SignIn_or_Sign_up() {
         FormSignIn.classList.add("d-none");
     }
 }
+//----------------------------------------------- formValidationSignIn
 function formValidationSignIn(Login, Password, Repeat_password, Email) {
     let message = "";
     // SignIn
@@ -132,6 +134,7 @@ function formValidationSignIn(Login, Password, Repeat_password, Email) {
         state.valuesTrueSignIn[3] = true;
     }
 }
+//----------------------------------------------- formValidationSignUp
 function formValidationSignUp(LoginAndEmail, PasswordSignUp) {
     let message = "";
     if (LoginAndEmail.value === "" || LoginAndEmail.value === null) {
