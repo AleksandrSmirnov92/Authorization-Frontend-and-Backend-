@@ -31,7 +31,8 @@
       class="container d-flex flex-column text-center p-0"
       style="width: 400px"
     >
-      <form id="Form1">
+      <!--FORM2 SignIn-->
+      <form id="Form1" novalidate>
         <div class="SignUp_Wrapper text-center bg-secondary d-none">
           <h3 class="pt-3 text-white">Регестрация</h3>
           <!-- Login -->
@@ -61,7 +62,7 @@
             style="width: 200px"
           />
           <!--Error Password-->
-          <div id="Error_Password"></div>
+          <div class="text-warning" id="Error_Password"></div>
           <!-- Repeat Password-->
           <label for="RepeatPassword" class="form-label mt-3"
             ><h5 class="text-white">Повторите пароль</h5></label
@@ -74,11 +75,12 @@
             id="RepeatPassword"
             style="width: 200px"
           />
+          <!--Error Repeat Password-->
+          <div class="text-warning" id="Error_Repeat_Password"></div>
           <label for="Email" class="form-label mt-3"
             ><h5 class="text-white">Электронная почта</h5></label
           >
-          <!--Error Repeat Password-->
-          <div id="Error_Repeat_Password"></div>
+
           <!-- Email-->
           <input
             type="email"
@@ -89,7 +91,7 @@
             style="width: 200px"
           />
           <!--Error Email-->
-          <div id="Error_Email"></div>
+          <div class="text-warning" id="Error_Email"></div>
           <button
             class="btn btn-primary mt-3 mb-3"
             id="button_submit"
@@ -99,7 +101,8 @@
           </button>
         </div>
       </form>
-      <form>
+      <!--FORM2 SignUp-->
+      <form id="Form2" novalidate>
         <div class="SignIn_Wrapper text-center bg-secondary d-none">
           <h3 class="pt-3 text-white">Войти</h3>
           <label for="Login" class="form-label mt-3"
@@ -107,27 +110,27 @@
           >
           <input
             type="text"
-            name="Login"
+            name="LoginAndPassword"
             placeholder="Username or email address"
             id="Login"
             class="form-control mx-auto"
             style="width: 200px"
             required
           />
-          <div id="Error_Login"></div>
+          <div class="text-warning" id="Error_LoginAndEmail"></div>
           <label for="Password" class="form-label mt-3"
             ><h5 class="text-white">Пароль</h5></label
           >
           <input
             type="password"
-            name="Password"
+            name="PasswordSignUp"
             placeholder="Enter password"
-            id="Password"
+            id="PasswordSignUp"
             class="form-control mx-auto"
             style="width: 200px"
             required
           />
-          <div id="Error_Password"></div>
+          <div class="text-warning" id="Error_PasswordSignUp"></div>
           <button class="btn btn-primary mt-3 mb-3" type="submit">Войти</button>
         </div>
       </form>
