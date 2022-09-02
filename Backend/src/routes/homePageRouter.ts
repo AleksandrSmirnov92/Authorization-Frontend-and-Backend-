@@ -2,21 +2,24 @@ import express from "express";
 const path = require("path");
 const Router = express.Router();
 const fs = require("fs");
-
-// const authUser = JSON.parse(
-//   fs.readFileSync(`${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`)
-// );
+const { searhUser } = require("./func");
+const AllUser = JSON.parse(
+  fs.readFileSync(`${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`)
+);
 
 const getHomePage = (req: any, res: any) => {
-  // console.log(req.cookies);
-  if (req.cookies.user) {
-    return res.sendFile(
-      path.resolve(
-        __dirname,
-        "../../../Frontend/public/homePage/",
-        "homepage.html"
-      )
-    );
+  if (req.cookies.username) {
+    if (searhUser(req.cookies.username)) {
+      return res.sendFile(
+        path.resolve(
+          __dirname,
+          "../../../Frontend/public/homePage/",
+          "homepage.html"
+        )
+      );
+    } else {
+      res.redirect("/");
+    }
   } else {
     res.redirect("/");
   }
@@ -81,6 +84,13 @@ const getHomePage = (req: any, res: any) => {
 //     }),
 //   ];
 // };
-
+// function searhUser(cookie: string) {
+//   for (let item of AllUser) {
+//     if (item.Login === cookie) {
+//       return true;
+//     }
+//     return false;
+//   }
+// }
 Router.route("/home").get(getHomePage);
 module.exports = Router;

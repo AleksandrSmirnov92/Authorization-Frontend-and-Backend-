@@ -21,7 +21,7 @@ let state = {
   valuesTrueSignIn: [false, false, false, false],
   valuesTrueSignUp: [false, false],
 };
-// document.cookie = "user=John";
+// document.cookie = "username=Sasha";
 SignUp_Button.addEventListener("click", () => {
   state.nameClassButton = "Sign_up";
   console.log("Зарегестрироваться", state.nameClassButton);
