@@ -18,6 +18,11 @@ let state = {
     Repeat_password: "",
     Email: "",
   },
+  valuesSignUp: {
+    Login: "",
+    Email: "",
+    Password: "",
+  },
   valuesTrueSignIn: [false, false, false, false],
   valuesTrueSignUp: [false, false],
 };
@@ -46,7 +51,7 @@ button_submit.addEventListener("submit", (e) => {
   const Email = document.querySelector("[name = 'Email']") as HTMLInputElement;
 
   formValidationSignIn(Login, Password, Repeat_password, Email);
-  let include: any = state.valuesTrueSignIn.includes(false);
+  let include: boolean = state.valuesTrueSignIn.includes(false);
   // if (include === false) {
   //   (Login.value = ""), (Password.value = ""), (Repeat_password.value = "");
   //   createUsers();
@@ -56,6 +61,7 @@ button_submit.addEventListener("submit", (e) => {
   // }
   // Email.value = "";
   // console.log(JSON.stringify(state.values));
+  console.log(state.values);
 });
 button_submit2.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -67,7 +73,9 @@ button_submit2.addEventListener("submit", (e) => {
     "[name = 'PasswordSignUp']"
   ) as HTMLInputElement;
   formValidationSignUp(LoginAndEmail, PasswordSignUp);
-  let include: any = state.valuesTrueSignIn.includes(false);
+  let include: boolean = state.valuesTrueSignIn.includes(false);
+  console.log(state.valuesSignUp);
+  signUp();
 });
 
 // --------------------------------------------------Function-----------------------------------------------------
@@ -154,15 +162,30 @@ function formValidationSignUp(
     Error_LoginAndEmail.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignUp[0] = false;
   } else if (LoginAndEmail.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
+    state.valuesSignUp.Email = LoginAndEmail.value;
+    state.valuesSignUp.Login = "";
     console.log("Вы ввели емэйл");
-    // запроса на поиск email
   } else if (!LoginAndEmail.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
+    state.valuesSignUp.Login = LoginAndEmail.value;
+    state.valuesSignUp.Email = "";
     console.log("Вы ввели логин");
-    // запрос на поиск логина
   }
   if (PasswordSignUp.value === "" || PasswordSignUp === null) {
     message = "Введите пароль";
     Error_PasswordSignUp.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignUp[1] = false;
+  } else {
+    state.valuesSignUp.Password = PasswordSignUp.value;
   }
+}
+// ---------------------------------------------signUp
+function signUp() {
+  fetch("http://localhost:3000/home", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      nameClassButton: state.nameClassButton,
+      state: state.valuesSignUp,
+    }),
+  });
 }

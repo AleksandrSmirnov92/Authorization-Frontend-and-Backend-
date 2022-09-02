@@ -24,6 +24,10 @@ const getHomePage = (req: any, res: any) => {
     res.redirect("/");
   }
 };
+const postHomePage = (req: any, res: any) => {
+  console.log(req.body);
+};
+
 /*const postHomePage = (req: any, res: any) => {
   if (
     req.body.state.Login &&
@@ -92,5 +96,5 @@ const getHomePage = (req: any, res: any) => {
 //     return false;
 //   }
 // }
-Router.route("/home").get(getHomePage);
+Router.route("/home").get(getHomePage).post(postHomePage);
 module.exports = Router;

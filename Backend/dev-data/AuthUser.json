@@ -4,5 +4,11 @@
     "Login": "Sasha",
     "Password": 12345,
     "Email": "Ryan00@mail.ru"
+  },
+  {
+    "id": 0.0693672282762655,
+    "Login": "Kostya",
+    "Password": 123,
+    "Email": "Kostya@mail.ru"
   }
 ]
