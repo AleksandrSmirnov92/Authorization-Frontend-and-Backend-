@@ -8,12 +8,18 @@ const fs = require("fs");
 // );
 
 const getHomePage = (req: any, res: any) => {
-  console.log(__dirname);
-  // if (req.session.authenticated) {
-  return res.sendFile(path.resolve(__dirname, "../", "index_forms.html"));
-  // res.redirect("/forms");
-  // }
-  // return res.redirect("/forms");
+  // console.log(req.cookies);
+  if (req.cookies.user) {
+    return res.sendFile(
+      path.resolve(
+        __dirname,
+        "../../../Frontend/public/homePage/",
+        "homepage.html"
+      )
+    );
+  } else {
+    res.redirect("/");
+  }
 };
 /*const postHomePage = (req: any, res: any) => {
   if (
