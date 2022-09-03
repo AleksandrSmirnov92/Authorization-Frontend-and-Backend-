@@ -25,7 +25,14 @@ const getHomePage = (req: any, res: any) => {
   }
 };
 const postHomePage = (req: any, res: any) => {
-  console.log(req.body);
+  if (req.body.nameClassButton === "Sign_in") {
+    console.log("Мы работаем с формой регистрации");
+    console.log(req.body);
+  }
+  if (req.body.nameClassButton === "Sign_up") {
+    console.log("Мы работаем с формой входа");
+    console.log(req.body);
+  }
 };
 
 /*const postHomePage = (req: any, res: any) => {

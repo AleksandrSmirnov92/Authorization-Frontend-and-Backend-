@@ -27,13 +27,13 @@ let state = {
   valuesTrueSignUp: [false, false],
 };
 // document.cookie = "username=Sasha";
-SignUp_Button.addEventListener("click", () => {
-  state.nameClassButton = "Sign_up";
+SignIn_Button.addEventListener("click", () => {
+  state.nameClassButton = "Sign_in";
   console.log("Зарегестрироваться", state.nameClassButton);
   activate_SignIn_or_Sign_up();
 });
-SignIn_Button.addEventListener("click", () => {
-  state.nameClassButton = "Sign_in";
+SignUp_Button.addEventListener("click", () => {
+  state.nameClassButton = "Sign_up";
   console.log("Войти", state.nameClassButton);
   activate_SignIn_or_Sign_up();
 });
@@ -52,15 +52,16 @@ button_submit.addEventListener("submit", (e) => {
 
   formValidationSignIn(Login, Password, Repeat_password, Email);
   let include: boolean = state.valuesTrueSignIn.includes(false);
-  // if (include === false) {
-  //   (Login.value = ""), (Password.value = ""), (Repeat_password.value = "");
-  //   createUsers();
-  //   console.log("форма отправилась1");
-  // } else {
-  //   console.log("Заполните форму до конца");
-  // }
-  // Email.value = "";
-  // console.log(JSON.stringify(state.values));
+  if (include === false) {
+    (Login.value = ""),
+      (Password.value = ""),
+      (Repeat_password.value = ""),
+      (Email.value = "");
+    sendPostSignIn();
+    console.log("форма отправилась1");
+  } else {
+    console.log("Заполните форму до конца");
+  }
   console.log(state.values);
 });
 button_submit2.addEventListener("submit", (e) => {
@@ -73,9 +74,15 @@ button_submit2.addEventListener("submit", (e) => {
     "[name = 'PasswordSignUp']"
   ) as HTMLInputElement;
   formValidationSignUp(LoginAndEmail, PasswordSignUp);
-  let include: boolean = state.valuesTrueSignIn.includes(false);
+  let include: boolean = state.valuesTrueSignUp.includes(false);
+  if (include === false) {
+    (LoginAndEmail.value = ""), (PasswordSignUp.value = "");
+    sendPostSignUp();
+    console.log("форма отправилась1");
+  } else {
+    console.log("Заполните форму до конца");
+  }
   console.log(state.valuesSignUp);
-  signUp();
 });
 
 // --------------------------------------------------Function-----------------------------------------------------
@@ -164,10 +171,14 @@ function formValidationSignUp(
   } else if (LoginAndEmail.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
     state.valuesSignUp.Email = LoginAndEmail.value;
     state.valuesSignUp.Login = "";
+    state.valuesTrueSignUp[0] = true;
+    Error_LoginAndEmail.innerHTML = "";
     console.log("Вы ввели емэйл");
   } else if (!LoginAndEmail.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
     state.valuesSignUp.Login = LoginAndEmail.value;
     state.valuesSignUp.Email = "";
+    state.valuesTrueSignUp[0] = true;
+    Error_LoginAndEmail.innerHTML = "";
     console.log("Вы ввели логин");
   }
   if (PasswordSignUp.value === "" || PasswordSignUp === null) {
@@ -176,16 +187,28 @@ function formValidationSignUp(
     state.valuesTrueSignUp[1] = false;
   } else {
     state.valuesSignUp.Password = PasswordSignUp.value;
+    state.valuesTrueSignUp[1] = true;
+    Error_PasswordSignUp.innerHTML = "";
   }
 }
 // ---------------------------------------------signUp
-function signUp() {
+function sendPostSignUp() {
   fetch("http://localhost:3000/home", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       nameClassButton: state.nameClassButton,
       state: state.valuesSignUp,
+    }),
+  });
+}
+function sendPostSignIn() {
+  fetch("http://localhost:3000/home", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      nameClassButton: state.nameClassButton,
+      state: state.values,
     }),
   });
 }
