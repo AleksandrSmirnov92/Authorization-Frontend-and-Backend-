@@ -10,7 +10,23 @@ const Error_LoginAndEmail = document.querySelector("#Error_LoginAndEmail")!;
 const Error_PasswordSignUp = document.querySelector("#Error_PasswordSignUp")!;
 const button_submit = document.querySelector("#Form1")!;
 const button_submit2 = document.querySelector("#Form2")!;
-let state = {
+interface State {
+  nameClassButton: string;
+  values: {
+    Login: string;
+    Password: number | string;
+    Repeat_password: number | string;
+    Email: string;
+  };
+  valuesSignUp: {
+    Login: string;
+    Email: string;
+    Password: string | number;
+  };
+  valuesTrueSignIn: boolean[];
+  valuesTrueSignUp: boolean[];
+}
+let state: State = {
   nameClassButton: "",
   values: {
     Login: "",
@@ -38,7 +54,7 @@ SignUp_Button.addEventListener("click", () => {
   activate_SignIn_or_Sign_up();
 });
 
-button_submit.addEventListener("submit", (e) => {
+button_submit.addEventListener("submit", (e: Event) => {
   console.log("отправить");
   e.preventDefault();
   const Login = document.querySelector("[name = 'Login']") as HTMLInputElement;
@@ -64,7 +80,7 @@ button_submit.addEventListener("submit", (e) => {
   }
   console.log(state.values);
 });
-button_submit2.addEventListener("submit", (e) => {
+button_submit2.addEventListener("submit", (e: Event) => {
   e.preventDefault();
   console.log("Вход");
   const LoginAndEmail = document.querySelector(
@@ -86,7 +102,7 @@ button_submit2.addEventListener("submit", (e) => {
 });
 
 // --------------------------------------------------Function-----------------------------------------------------
-function activate_SignIn_or_Sign_up() {
+function activate_SignIn_or_Sign_up(): void {
   if (state.nameClassButton === "Sign_up") {
     FormSignIn.classList.remove("d-none");
     FormSignUp.classList.add("d-none");
@@ -102,7 +118,7 @@ function formValidationSignIn(
   Password: HTMLInputElement,
   Repeat_password: HTMLInputElement,
   Email: HTMLInputElement
-) {
+): void {
   let message: string = "";
   // SignIn
   // Login
@@ -162,7 +178,7 @@ function formValidationSignIn(
 function formValidationSignUp(
   LoginAndEmail: HTMLInputElement,
   PasswordSignUp: HTMLInputElement
-) {
+): void {
   let message: string = "";
   if (LoginAndEmail.value === "" || LoginAndEmail.value === null) {
     message = "вы ничего не ввели";
