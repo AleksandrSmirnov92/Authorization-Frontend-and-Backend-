@@ -31,7 +31,41 @@ const postHomePage = (req: any, res: any) => {
   }
   if (req.body.nameClassButton === "Sign_up") {
     console.log("Мы работаем с формой входа");
-    console.log(req.body);
+    let { Login, Email, Password } = req.body.valuesSignUp;
+    if (Email && Password) {
+      console.log("Мы работаем с Email");
+      for (let item of AllUser) {
+        if (item.Email === Email) {
+          if (item.Password === Password) {
+            return res
+              .status(200)
+              .cookie("username", `${item.Login}`)
+              .json({
+                status: "SUCCESS",
+                message: `С возвращением ${item.Login}`,
+              });
+            // Доделать куки
+          } else {
+            return res.status(404).json({
+              status: "ERROR",
+              message: "Неправильно введет Password",
+            });
+          }
+        }
+      }
+      return res.status(404).json({
+        status: "ERROR",
+        message: "Неправильно введет Email",
+      });
+    } else if (Login && Password) {
+      console.log("Мы работаем с Логином");
+      return res.json({ Успешно: Login });
+    } else {
+      res.status(404).json({
+        status: "ERROR",
+        message: "Ошибка заполнения формы",
+      });
+    }
   }
 };
 
