@@ -48,20 +48,37 @@ const postHomePage = (req: any, res: any) => {
           } else {
             return res.status(404).json({
               status: "ERROR",
-              message: "Неправильно введет Password",
+              message: "Неправильно введен Password",
             });
           }
         }
       }
       return res.status(404).json({
         status: "ERROR",
-        message: "Неправильно введет Email",
+        message: "Неправильно введен Email",
       });
     } else if (Login && Password) {
-      console.log("Мы работаем с Логином");
-      return res.json({ Успешно: Login });
+      console.log("Мы работаем с Login");
+      for (let item of AllUser) {
+        if (item.Login === Login) {
+          if (item.Password === Password) {
+            return res.status(200).json({
+              status: "SUCCESS",
+              message: `С возвращением ${item.Login}`,
+            });
+          } else {
+            return res.status(404).json({
+              status: "ERROR",
+              message: "Неправильно введен Password ",
+            });
+          }
+        }
+      }
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "Неправильно введен Login" });
     } else {
-      res.status(404).json({
+      return res.status(404).json({
         status: "ERROR",
         message: "Ошибка заполнения формы",
       });
