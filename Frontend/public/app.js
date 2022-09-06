@@ -9,6 +9,7 @@ const Error_Repeat_Password = document.querySelector("#Error_Repeat_Password");
 const Error_Email = document.querySelector("#Error_Email");
 const Error_LoginAndEmail = document.querySelector("#Error_LoginAndEmail");
 const Error_PasswordSignUp = document.querySelector("#Error_PasswordSignUp");
+const Error_Server = document.querySelector("#Error_Server");
 const button_submit = document.querySelector("#Form1");
 const button_submit2 = document.querySelector("#Form2");
 let state = {
@@ -58,7 +59,6 @@ button_submit.addEventListener("submit", (e) => {
     else {
         console.log("Заполните форму до конца");
     }
-    console.log(state.values);
 });
 button_submit2.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -194,6 +194,10 @@ function sendPostSignUp() {
             nameClassButton: state.nameClassButton,
             state: state.valuesSignUp,
         }),
+    })
+        .then((responce) => responce.json())
+        .then((responce) => {
+        console.log(responce);
     });
 }
 function sendPostSignIn() {
@@ -204,5 +208,22 @@ function sendPostSignIn() {
             nameClassButton: state.nameClassButton,
             state: state.values,
         }),
+    })
+        .then((responce) => responce.json())
+        .then((responce) => {
+        console.log(responce.status);
+        if (responce.status === "SUCCESS") {
+            setTimeout(() => {
+                window.location.href = "http://localhost:3000/home";
+            }, 1000);
+        }
+        else {
+            console.log(responce);
+            let message = responce.message;
+            Error_Server.innerHTML = `<h5>${message}</h5>`;
+            setTimeout(() => {
+                Error_Server.innerHTML = ``;
+            }, 2000);
+        }
     });
 }

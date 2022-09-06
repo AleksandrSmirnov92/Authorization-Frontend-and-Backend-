@@ -2,14 +2,20 @@ import express from "express";
 const path = require("path");
 const Router = express.Router();
 const fs = require("fs");
-const { searhUser } = require("./func");
+const {
+  searhUserCookie,
+  createNewUser,
+  searchLogin,
+  searchEmail,
+} = require("./func");
 const AllUser = JSON.parse(
   fs.readFileSync(`${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`)
 );
 
 const getHomePage = (req: any, res: any) => {
+  console.log(req.cookies.username);
   if (req.cookies.username) {
-    if (searhUser(req.cookies.username)) {
+    if (!searhUserCookie(req.cookies.username)) {
       return res.sendFile(
         path.resolve(
           __dirname,
@@ -27,11 +33,52 @@ const getHomePage = (req: any, res: any) => {
 const postHomePage = (req: any, res: any) => {
   if (req.body.nameClassButton === "Sign_in") {
     console.log("Мы работаем с формой регистрации");
-    console.log(req.body);
+    let { Login, Password, Repeat_password, Email } = req.body.state;
+    if (Login && Password && Repeat_password && Email) {
+      if (searchLogin(Login)) {
+        if (searchEmail(Email)) {
+          AllUser.push(createNewUser(Login, Password, Email));
+          fs.writeFile(
+            `${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`,
+            JSON.stringify(AllUser),
+            (err: Error) => {
+              if (err) {
+                console.log(err);
+              } else {
+                return res
+                  .status(201)
+                  .cookie("username", `${Login}`, {
+                    maxAge: 180000,
+                  })
+                  .json({
+                    status: "SUCCESS",
+                    body: createNewUser(Login, Password, Email),
+                  });
+              }
+            }
+          );
+        } else {
+          return res.status(404).json({
+            status: "ERROR",
+            message: "Такой Email уже зарегестрирован",
+          });
+        }
+      } else {
+        return res.status(404).json({
+          status: "ERROR",
+          message: "Такой пользователь уже существует",
+        });
+      }
+    } else {
+      return res.status(404).json({
+        status: "ERROR",
+        message: "Заполните форму до конца",
+      });
+    }
   }
   if (req.body.nameClassButton === "Sign_up") {
-    console.log("Мы работаем с формой входа");
-    let { Login, Email, Password } = req.body.valuesSignUp;
+    console.log("Мы работаем с формой входа", req.body);
+    let { Login, Email, Password } = req.body.state;
     if (Email && Password) {
       console.log("Мы работаем с Email");
       for (let item of AllUser) {
@@ -86,73 +133,5 @@ const postHomePage = (req: any, res: any) => {
   }
 };
 
-/*const postHomePage = (req: any, res: any) => {
-  if (
-    req.body.state.Login &&
-    req.body.state.Password &&
-    req.body.state.Repeat_password
-  ) {
-    const newObg = Object.assign({ id: Math.random() }, req.body);
-    authUser.push(newObg);
-    for (let item of authUser) {
-      if (item.Login === req.body.state.Login) {
-        return res.status(400).json({
-          status: "error",
-          message: "Такой пользователь уже существует",
-        });
-        // Нужно добавить редирект на страничку регистрации
-      } else {
-        return res
-          .status(200)
-          .cookie("username", req.body.state.Login)
-          .json({
-            status: "success",
-            body: { УСПЕШНО: authUser },
-          });
-      }
-      //       fs.writeFile(
-      //         `${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`,
-      //         JSON.stringify(authUser),
-      //         (err: Error) => {
-      //           res
-      //             .status(201)
-      //             .cookie("username", req.body.Login, { secure: true })
-      //             .json({
-      //               status: "success",
-      //               body: { УСПЕШНО: authUser },
-      //             });
-      //         }
-      //       );
-      //     }
-      // else {
-      //   req.session.authenticated = true;
-      //   req.session.user = {
-      //     login: req.body.Login,
-      //   };
-      //   return res.json(req.session);
-      // Если сессия не существует то этот ответ
-      // }
-    }
-  }
-};
-*/
-//   }
-// };
-//  else
-//   [
-//     res.status(404).json({
-//       status: "error",
-//       body: "Ошибка форма не до конца заполнена",
-//     }),
-//   ];
-// };
-// function searhUser(cookie: string) {
-//   for (let item of AllUser) {
-//     if (item.Login === cookie) {
-//       return true;
-//     }
-//     return false;
-//   }
-// }
 Router.route("/home").get(getHomePage).post(postHomePage);
 module.exports = Router;
