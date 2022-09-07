@@ -9,9 +9,9 @@ const Error_Email = document.querySelector("#Error_Email")!;
 const Error_LoginAndEmail = document.querySelector("#Error_LoginAndEmail")!;
 const Error_PasswordSignUp = document.querySelector("#Error_PasswordSignUp")!;
 const Error_Server = document.querySelector("#Error_Server")!;
+const Error_ServerForSignUp = document.querySelector("#Error_ServerForSignUp")!;
 const button_submit = document.querySelector("#Form1")!;
 const button_submit2 = document.querySelector("#Form2")!;
-
 interface State {
   nameClassButton: string;
   values: {
@@ -220,7 +220,18 @@ function sendPostSignUp() {
   })
     .then((responce) => responce.json())
     .then((responce) => {
-      console.log(responce);
+      if (responce.status === "SUCCESS") {
+        setTimeout(() => {
+          window.location.href = "http://localhost:3000/home";
+        }, 1000);
+      } else {
+        let message: string = responce.message;
+        console.log(responce, message);
+        Error_ServerForSignUp.innerHTML = `<h5>${message}</h5>`;
+        setTimeout(() => {
+          Error_ServerForSignUp.innerHTML = "";
+        }, 2000);
+      }
     });
 }
 function sendPostSignIn() {
@@ -240,8 +251,7 @@ function sendPostSignIn() {
           window.location.href = "http://localhost:3000/home";
         }, 1000);
       } else {
-        console.log(responce);
-        let message = responce.message;
+        let message: string = responce.message;
         Error_Server.innerHTML = `<h5>${message}</h5>`;
         setTimeout(() => {
           Error_Server.innerHTML = ``;

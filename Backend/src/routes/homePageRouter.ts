@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 const path = require("path");
 const Router = express.Router();
 const fs = require("fs");
@@ -14,23 +14,30 @@ const AllUser = JSON.parse(
 
 const getHomePage = (req: any, res: any) => {
   console.log(req.cookies.username);
-  if (req.cookies.username) {
-    if (!searhUserCookie(req.cookies.username)) {
-      return res.sendFile(
-        path.resolve(
-          __dirname,
-          "../../../Frontend/public/homePage/",
-          "homepage.html"
-        )
-      );
-    } else {
-      res.redirect("/");
-    }
+
+  if (searhUserCookie(req.cookies.username)) {
+    return res.sendFile(
+      path.resolve(
+        __dirname,
+        "../../../Frontend/public/homePage/",
+        "homepage.html"
+      )
+    );
   } else {
     res.redirect("/");
   }
 };
-const postHomePage = (req: any, res: any) => {
+interface State {
+  Login: string;
+  Password: string | number;
+  Repeat_password: string | number;
+  Email: string;
+}
+
+const postHomePage = (
+  req: Request<{}, {}, { nameClassButton: string; state: State }>,
+  res: Response<{ status: string; body: {}; message: string }>
+) => {
   if (req.body.nameClassButton === "Sign_in") {
     console.log("Мы работаем с формой регистрации");
     let { Login, Password, Repeat_password, Email } = req.body.state;
@@ -53,6 +60,7 @@ const postHomePage = (req: any, res: any) => {
                   .json({
                     status: "SUCCESS",
                     body: createNewUser(Login, Password, Email),
+                    message: "",
                   });
               }
             }
@@ -60,18 +68,21 @@ const postHomePage = (req: any, res: any) => {
         } else {
           return res.status(404).json({
             status: "ERROR",
+            body: {},
             message: "Такой Email уже зарегестрирован",
           });
         }
       } else {
         return res.status(404).json({
           status: "ERROR",
+          body: {},
           message: "Такой пользователь уже существует",
         });
       }
     } else {
       return res.status(404).json({
         status: "ERROR",
+        body: {},
         message: "Заполните форму до конца",
       });
     }
@@ -83,18 +94,20 @@ const postHomePage = (req: any, res: any) => {
       console.log("Мы работаем с Email");
       for (let item of AllUser) {
         if (item.Email === Email) {
-          if (item.Password === Password) {
+          if (String(item.Password) === Password) {
             return res
               .status(200)
-              .cookie("username", `${item.Login}`)
+              .cookie("username", `${item.Login}`, { maxAge: 180000 })
               .json({
                 status: "SUCCESS",
+                body: {},
                 message: `С возвращением ${item.Login}`,
               });
             // Доделать куки
           } else {
             return res.status(404).json({
               status: "ERROR",
+              body: {},
               message: "Неправильно введен Password",
             });
           }
@@ -102,20 +115,26 @@ const postHomePage = (req: any, res: any) => {
       }
       return res.status(404).json({
         status: "ERROR",
+        body: {},
         message: "Неправильно введен Email",
       });
     } else if (Login && Password) {
       console.log("Мы работаем с Login");
       for (let item of AllUser) {
         if (item.Login === Login) {
-          if (item.Password === Password) {
-            return res.status(200).json({
-              status: "SUCCESS",
-              message: `С возвращением ${item.Login}`,
-            });
+          if (String(item.Password) === Password) {
+            return res
+              .status(200)
+              .cookie("username", `${item.Login}`, { maxAge: 180000 })
+              .json({
+                status: "SUCCESS",
+                body: {},
+                message: `С возвращением ${item.Login}`,
+              });
           } else {
             return res.status(404).json({
               status: "ERROR",
+              body: {},
               message: "Неправильно введен Password ",
             });
           }
@@ -123,10 +142,15 @@ const postHomePage = (req: any, res: any) => {
       }
       return res
         .status(404)
-        .json({ status: "ERROR", message: "Неправильно введен Login" });
+        .json({
+          status: "ERROR",
+          body: {},
+          message: "Неправильно введен Login",
+        });
     } else {
       return res.status(404).json({
         status: "ERROR",
+        body: {},
         message: "Ошибка заполнения формы",
       });
     }

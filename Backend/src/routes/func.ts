@@ -8,8 +8,8 @@ exports.searhUserCookie = (cookie: string) => {
     if (item.Login === cookie) {
       return true;
     }
-    return false;
   }
+  return false;
 };
 exports.createNewUser = (
   Login: string,
