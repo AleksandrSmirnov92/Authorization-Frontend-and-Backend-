@@ -88,12 +88,12 @@ const postHomePage = (
     }
   }
   if (req.body.nameClassButton === "Sign_up") {
-    console.log("Мы работаем с формой входа", req.body);
+    console.log("Мы работаем с формой входа");
     let { Login, Email, Password } = req.body.state;
     if (Email && Password) {
       console.log("Мы работаем с Email");
       for (let item of AllUser) {
-        if (item.Email === Email) {
+        if (item.Email === Email.toLowerCase()) {
           if (String(item.Password) === Password) {
             return res
               .status(200)
@@ -140,13 +140,11 @@ const postHomePage = (
           }
         }
       }
-      return res
-        .status(404)
-        .json({
-          status: "ERROR",
-          body: {},
-          message: "Неправильно введен Login",
-        });
+      return res.status(404).json({
+        status: "ERROR",
+        body: {},
+        message: "Неправильно введен Login",
+      });
     } else {
       return res.status(404).json({
         status: "ERROR",

@@ -21,7 +21,7 @@ exports.createNewUser = (
     {
       Login,
       Password,
-      Email,
+      Email: Email.toLowerCase(),
     }
   );
   return newUser;
@@ -43,7 +43,7 @@ exports.searchEmail = (Email: string) => {
   for (let item of AllUser) {
     massivEmail.push(item.Email);
   }
-  let includes = massivEmail.includes(Email);
+  let includes = massivEmail.includes(Email.toLowerCase());
   if (includes) {
     return false;
   } else {
