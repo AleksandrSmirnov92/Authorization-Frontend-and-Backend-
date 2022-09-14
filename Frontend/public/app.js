@@ -55,7 +55,7 @@ button_submit.addEventListener("submit", (e) => {
             (Repeat_password.value = ""),
             (Email.value = "");
         sendPostSignIn();
-        console.log("форма отправилась1");
+        console.log("форма отправилась SignIn");
     }
     else {
         console.log("Заполните форму до конца");
@@ -71,7 +71,7 @@ button_submit2.addEventListener("submit", (e) => {
     if (include === false) {
         (LoginAndEmail.value = ""), (PasswordSignUp.value = "");
         sendPostSignUp();
-        console.log("форма отправилась1");
+        console.log("форма отправилась SignUp");
     }
     else {
         console.log("Заполните форму до конца");
@@ -205,7 +205,6 @@ function sendPostSignUp() {
         }
         else {
             let message = responce.message;
-            console.log(responce, message);
             Error_ServerForSignUp.innerHTML = `<h5>${message}</h5>`;
             setTimeout(() => {
                 Error_ServerForSignUp.innerHTML = "";
@@ -224,7 +223,6 @@ function sendPostSignIn() {
     })
         .then((responce) => responce.json())
         .then((responce) => {
-        console.log(responce.status);
         if (responce.status === "SUCCESS") {
             setTimeout(() => {
                 window.location.href = "http://localhost:3000/home";
