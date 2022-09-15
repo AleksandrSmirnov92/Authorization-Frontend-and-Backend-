@@ -28,14 +28,14 @@ interface State {
   nameClassButton: string;
   values: {
     Login: string;
-    Password: number | string;
-    Repeat_password: number | string;
+    Password: string;
+    Repeat_password: string;
     Email: string;
   };
   valuesSignUp: {
     Login: string;
     Email: string;
-    Password: string | number;
+    Password: string;
   };
 }
 let state: State = {
@@ -209,7 +209,7 @@ type StateFormOne = {
 type StateFormTwo = {
   Login: string;
   Email: string;
-  Password: string | number;
+  Password: string;
 };
 type StateForPost = StateFormOne | StateFormTwo;
 function sendPostRequest(nameClassButton: string, state: StateForPost) {
