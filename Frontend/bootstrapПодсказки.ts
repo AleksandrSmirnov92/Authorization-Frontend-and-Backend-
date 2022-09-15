@@ -35,7 +35,56 @@ https://getbootstrap.com/docs/5.2/layout/gutters/
 
 
 
-
+две функции для отправки формы 
+// ---------------------------------------------signUp
+// function sendPostSignUp() {
+//   fetch("http://localhost:3000/home", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({
+//       nameClassButton: state.nameClassButton,
+//       state: state.valuesSignUp,
+//     }),
+//   })
+//     .then((responce) => responce.json())
+//     .then((responce) => {
+//       if (responce.status === "SUCCESS") {
+//         setTimeout(() => {
+//           window.location.href = "http://localhost:3000/home";
+//         }, 1000);
+//       } else {
+//         let message: string = responce.message;
+//         errorServerForSignUp.innerHTML = `<h5>${message}</h5>`;
+//         setTimeout(() => {
+//           errorServerForSignUp.innerHTML = "";
+//         }, 2000);
+//       }
+//     });
+// }
+// function sendPostSignIn() {
+//   fetch("http://localhost:3000/home", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({
+//       nameClassButton: state.nameClassButton,
+//       state: state.values,
+//     }),
+//   })
+//     .then((responce) => responce.json())
+//     .then((responce) => {
+//       if (responce.status === "SUCCESS") {
+//         setTimeout(() => {
+//           window.location.href = "http://localhost:3000/home";
+//         }, 1000);
+//       } else {
+//         let message: string = responce.message;
+//         errorServer.innerHTML = `<h5>${message}</h5>`;
+//         setTimeout(() => {
+//           errorServer.innerHTML = ``;
+//         }, 2000);
+//       }
+//     });
+// }
 
 
 
