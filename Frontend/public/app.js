@@ -47,6 +47,7 @@ signUpButton.addEventListener("click", () => {
 formOneSubmit.addEventListener("submit", (e) => {
     console.log("отправить");
     e.preventDefault();
+
     if (formValidationSignIn(login, password, repeatPassword, email).includes(false)) {
         return console.log("Заполните форму до конца");
     }
@@ -57,8 +58,9 @@ formOneSubmit.addEventListener("submit", (e) => {
 formTwoSubmit.addEventListener("submit", (e) => {
     e.preventDefault();
     console.log("Вход");
+
     if (formValidationSignUp(loginAndEmail, passwordSignUp).includes(false)) {
-        return console.log("Заполните форму до конца");
+        return console.log("Заполните форму до конца");  
     }
     resetForm(state.nameClassButton);
     sendPostRequest(state.nameClassButton, state.valuesSignUp);
@@ -194,13 +196,15 @@ function sendPostRequest(nameClassButton, state) {
         }
         else {
             let message = responce.message;
+
             errorServer.innerHTML = `<h5>${message}</h5>`;
+
             setTimeout(() => {
                 errorServer.innerHTML = ``;
             }, 2000);
         }
     });
-}
+
 function resetForm(nameClassButton) {
     if (nameClassButton === "Sign_in") {
         (login.value = ""),
@@ -211,4 +215,4 @@ function resetForm(nameClassButton) {
     if (nameClassButton === "Sign_up") {
         (loginAndEmail.value = ""), (passwordSignUp.value = "");
     }
-}
+
