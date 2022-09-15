@@ -1,9 +1,7 @@
-const button_back = document.querySelector(".button_back")!;
+const buttonBack = document.querySelector(".buttonBack")!;
 const userName = document.querySelector(".userName")!;
 userName.innerHTML = getCookie("username");
-console.log(getCookie("username"));
-button_back.addEventListener("click", () => {
-  console.log("back");
+buttonBack.addEventListener("click", () => {
   setTimeout(() => {
     window.location.href = "http://localhost:3000/";
     document.cookie = "username = ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
