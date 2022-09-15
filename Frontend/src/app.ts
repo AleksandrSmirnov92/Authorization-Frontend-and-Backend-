@@ -229,10 +229,18 @@ function sendPostRequest(nameClassButton: string, state: StateForPost) {
         }, 1000);
       } else {
         let message: string = responce.message;
-        errorServer.innerHTML = `<h5>${message}</h5>`;
-        setTimeout(() => {
-          errorServer.innerHTML = ``;
-        }, 2000);
+        if (nameClassButton === "Sign_in") {
+          errorServer.innerHTML = `<h5>${message}</h5>`;
+          setTimeout(() => {
+            errorServer.innerHTML = ``;
+          }, 2000);
+        }
+        if (nameClassButton === "Sign_up") {
+          errorServerForSignUp.innerHTML = `<h5>${message}</h5>`;
+          setTimeout(() => {
+            errorServerForSignUp.innerHTML = ``;
+          }, 2000);
+        }
       }
     });
 }
