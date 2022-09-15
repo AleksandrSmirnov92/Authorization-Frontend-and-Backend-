@@ -1,17 +1,17 @@
-const SignUp_Button = document.querySelector(".button_Sign_up")!;
-const SignIn_Button = document.querySelector(".button_Sign_in")!;
-const FormSignUp = document.querySelector(".SignUp_Wrapper")!;
-const FormSignIn = document.querySelector(".SignIn_Wrapper")!;
-const Error_Login = document.querySelector("#Error_Login")!;
-const Error_Password = document.querySelector("#Error_Password")!;
-const Error_Repeat_Password = document.querySelector("#Error_Repeat_Password")!;
-const Error_Email = document.querySelector("#Error_Email")!;
-const Error_LoginAndEmail = document.querySelector("#Error_LoginAndEmail")!;
-const Error_PasswordSignUp = document.querySelector("#Error_PasswordSignUp")!;
-const Error_Server = document.querySelector("#Error_Server")!;
-const Error_ServerForSignUp = document.querySelector("#Error_ServerForSignUp")!;
-const button_submit = document.querySelector("#Form1")!;
-const button_submit2 = document.querySelector("#Form2")!;
+const signUpButton = document.querySelector(".ButtonSignUp")!;
+const signInButton = document.querySelector(".ButtonSignIn")!;
+const formSignUp = document.querySelector(".SignUpWrapper")!;
+const formSignIn = document.querySelector(".SignInWrapper")!;
+const errorLogin = document.querySelector(".ErrorLogin")!;
+const errorPassword = document.querySelector(".ErrorPassword")!;
+const errorRepeatPassword = document.querySelector(".ErrorRepeatPassword")!;
+const errorEmail = document.querySelector(".ErrorEmail")!;
+const errorLoginAndEmail = document.querySelector(".ErrorLoginAndEmail")!;
+const errorPasswordSignUp = document.querySelector(".ErrorPasswordSignUp")!;
+const errorServer = document.querySelector(".ErrorServer")!;
+const errorServerForSignUp = document.querySelector(".ErrorServerForSignUp")!;
+const formOneSubmit = document.querySelector(".Form1")!;
+const formTwoSubmit = document.querySelector(".Form2")!;
 interface State {
   nameClassButton: string;
   values: {
@@ -45,18 +45,18 @@ let state: State = {
   valuesTrueSignUp: [false, false],
 };
 // document.cookie = "username=Sasha";
-SignIn_Button.addEventListener("click", () => {
+signInButton.addEventListener("click", () => {
   state.nameClassButton = "Sign_in";
   console.log("Зарегестрироваться", state.nameClassButton);
   activate_SignIn_or_Sign_up();
 });
-SignUp_Button.addEventListener("click", () => {
+signUpButton.addEventListener("click", () => {
   state.nameClassButton = "Sign_up";
   console.log("Войти", state.nameClassButton);
   activate_SignIn_or_Sign_up();
 });
 
-button_submit.addEventListener("submit", (e: Event) => {
+formOneSubmit.addEventListener("submit", (e: Event) => {
   console.log("отправить");
   e.preventDefault();
   const Login = document.querySelector("[name = 'Login']") as HTMLInputElement;
@@ -81,7 +81,7 @@ button_submit.addEventListener("submit", (e: Event) => {
     console.log("Заполните форму до конца");
   }
 });
-button_submit2.addEventListener("submit", (e: Event) => {
+formTwoSubmit.addEventListener("submit", (e: Event) => {
   e.preventDefault();
   console.log("Вход");
   const LoginAndEmail = document.querySelector(
@@ -105,12 +105,12 @@ button_submit2.addEventListener("submit", (e: Event) => {
 // --------------------------------------------------Function-----------------------------------------------------
 function activate_SignIn_or_Sign_up(): void {
   if (state.nameClassButton === "Sign_up") {
-    FormSignIn.classList.remove("d-none");
-    FormSignUp.classList.add("d-none");
+    formSignIn.classList.remove("d-none");
+    formSignUp.classList.add("d-none");
   }
   if (state.nameClassButton === "Sign_in") {
-    FormSignUp.classList.remove("d-none");
-    FormSignIn.classList.add("d-none");
+    formSignUp.classList.remove("d-none");
+    formSignIn.classList.add("d-none");
   }
 }
 //----------------------------------------------- formValidationSignIn
@@ -125,53 +125,53 @@ function formValidationSignIn(
   // Login
   if (Login.value === "" || Login.value === null) {
     message = "Введите логин";
-    Error_Login.innerHTML = `<span>${message}</span>`;
+    errorLogin.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignIn[0] = false;
   } else if (Login.value.length <= 4) {
     message = "Логин слишком короткий";
-    Error_Login.innerHTML = `<span>${message}</span>`;
+    errorLogin.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignIn[0] = false;
   } else {
     state.values.Login = Login.value;
-    Error_Login.innerHTML = ``;
+    errorLogin.innerHTML = ``;
     state.valuesTrueSignIn[0] = true;
   }
   // Password
   if (Password.value === "" || Password.value === null) {
     message = "Введите пароль";
-    Error_Password.innerHTML = `<span>${message}</span>`;
+    errorPassword.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignIn[1] = false;
   } else {
     state.values.Password = Password.value;
-    Error_Password.innerHTML = "";
+    errorPassword.innerHTML = "";
     state.valuesTrueSignIn[1] = true;
   }
   // Repeat password
   if (Repeat_password.value === "" || Repeat_password.value === null) {
     message = "Повторите пароль";
-    Error_Repeat_Password.innerHTML = `<span>${message}</span>`;
+    errorRepeatPassword.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignIn[2] = false;
   } else if (Repeat_password.value !== Password.value) {
     message = "Пароль не совпадает";
-    Error_Repeat_Password.innerHTML = `<span>${message}</span>`;
+    errorRepeatPassword.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignIn[2] = false;
   } else {
     state.values.Repeat_password = Repeat_password.value;
-    Error_Repeat_Password.innerHTML = "";
+    errorRepeatPassword.innerHTML = "";
     state.valuesTrueSignIn[2] = true;
   }
   // Email
   if (Email.value === "" || Email.value === null) {
     message = "Напишите электронную почту";
-    Error_Email.innerHTML = `<span>${message}</span>`;
+    errorEmail.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignIn[3] = false;
   } else if (!Email.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
     message = "Нерпавильно введен Email";
-    Error_Email.innerHTML = `<span>${message}</span>`;
+    errorEmail.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignIn[3] = false;
   } else {
     state.values.Email = Email.value;
-    Error_Email.innerHTML = "";
+    errorEmail.innerHTML = "";
     state.valuesTrueSignIn[3] = true;
   }
 }
@@ -183,29 +183,29 @@ function formValidationSignUp(
   let message: string = "";
   if (LoginAndEmail.value === "" || LoginAndEmail.value === null) {
     message = "вы ничего не ввели";
-    Error_LoginAndEmail.innerHTML = `<span>${message}</span>`;
+    errorLoginAndEmail.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignUp[0] = false;
   } else if (LoginAndEmail.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
     state.valuesSignUp.Email = LoginAndEmail.value;
     state.valuesSignUp.Login = "";
     state.valuesTrueSignUp[0] = true;
-    Error_LoginAndEmail.innerHTML = "";
+    errorLoginAndEmail.innerHTML = "";
     console.log("Вы ввели емэйл");
   } else if (!LoginAndEmail.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
     state.valuesSignUp.Login = LoginAndEmail.value;
     state.valuesSignUp.Email = "";
     state.valuesTrueSignUp[0] = true;
-    Error_LoginAndEmail.innerHTML = "";
+    errorLoginAndEmail.innerHTML = "";
     console.log("Вы ввели логин");
   }
   if (PasswordSignUp.value === "" || PasswordSignUp === null) {
     message = "Введите пароль";
-    Error_PasswordSignUp.innerHTML = `<span>${message}</span>`;
+    errorPasswordSignUp.innerHTML = `<span>${message}</span>`;
     state.valuesTrueSignUp[1] = false;
   } else {
     state.valuesSignUp.Password = PasswordSignUp.value;
     state.valuesTrueSignUp[1] = true;
-    Error_PasswordSignUp.innerHTML = "";
+    errorPasswordSignUp.innerHTML = "";
   }
 }
 // ---------------------------------------------signUp
@@ -226,9 +226,9 @@ function sendPostSignUp() {
         }, 1000);
       } else {
         let message: string = responce.message;
-        Error_ServerForSignUp.innerHTML = `<h5>${message}</h5>`;
+        errorServerForSignUp.innerHTML = `<h5>${message}</h5>`;
         setTimeout(() => {
-          Error_ServerForSignUp.innerHTML = "";
+          errorServerForSignUp.innerHTML = "";
         }, 2000);
       }
     });
@@ -250,9 +250,9 @@ function sendPostSignIn() {
         }, 1000);
       } else {
         let message: string = responce.message;
-        Error_Server.innerHTML = `<h5>${message}</h5>`;
+        errorServer.innerHTML = `<h5>${message}</h5>`;
         setTimeout(() => {
-          Error_Server.innerHTML = ``;
+          errorServer.innerHTML = ``;
         }, 2000);
       }
     });

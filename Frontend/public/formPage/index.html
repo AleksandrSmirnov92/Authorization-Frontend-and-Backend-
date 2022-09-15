@@ -5,11 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Authorization</title>
-    <!-- <link
-      rel="stylesheet"
-      type="text/css"
-      href="../node_modules/bootstrap/dist/css/bootstrap.css"
-    /> -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -23,12 +18,8 @@
         class="container bg-dark d-flex justify-content-around"
         style="width: 400px"
       >
-        <button class="btn btn-primary mt-2 mb-2 button_Sign_in">
-          Sign in
-        </button>
-        <button class="btn btn-primary mt-2 mb-2 button_Sign_up">
-          Sign up
-        </button>
+        <button class="btn btn-primary mt-2 mb-2 ButtonSignIn">Sign in</button>
+        <button class="btn btn-primary mt-2 mb-2 ButtonSignUp">Sign up</button>
       </div>
       <!-- добавить падинги-->
     </header>
@@ -38,8 +29,8 @@
       style="width: 400px"
     >
       <!--FORM2 SignIn-->
-      <form id="Form1" novalidate>
-        <div class="SignUp_Wrapper text-center bg-secondary d-none">
+      <form class="Form1" novalidate>
+        <div class="SignUpWrapper text-center bg-secondary d-none">
           <h3 class="pt-3 text-white">Регестрация</h3>
           <!-- Login -->
           <label for="Login" class="form-label mt-3"
@@ -54,7 +45,7 @@
             style="width: 200px"
           />
           <!--Error Login-->
-          <div class="text-warning" id="Error_Login"></div>
+          <div class="text-warning ErrorLogin"></div>
           <!-- Password-->
           <label for="Password" class="form-label mt-3"
             ><h5 class="text-white">Пароль</h5></label
@@ -68,7 +59,7 @@
             style="width: 200px"
           />
           <!--Error Password-->
-          <div class="text-warning" id="Error_Password"></div>
+          <div class="text-warning ErrorPassword"></div>
           <!-- Repeat Password-->
           <label for="RepeatPassword" class="form-label mt-3"
             ><h5 class="text-white">Повторите пароль</h5></label
@@ -82,7 +73,7 @@
             style="width: 200px"
           />
           <!--Error Repeat Password-->
-          <div class="text-warning" id="Error_Repeat_Password"></div>
+          <div class="text-warning ErrorRepeatPassword"></div>
           <label for="Email" class="form-label mt-3"
             ><h5 class="text-white">Электронная почта</h5></label
           >
@@ -97,7 +88,7 @@
             style="width: 200px"
           />
           <!--Error Email-->
-          <div class="text-warning" id="Error_Email"></div>
+          <div class="text-warning ErrorEmail"></div>
           <button
             class="btn btn-primary mt-3 mb-3"
             id="button_submit"
@@ -105,12 +96,12 @@
           >
             Зарегистрироваться
           </button>
-          <div class="text-warning" id="Error_Server"></div>
+          <div class="text-warning ErrorServer"></div>
         </div>
       </form>
       <!--FORM2 SignUp-->
-      <form id="Form2" novalidate>
-        <div class="SignIn_Wrapper text-center bg-secondary d-none">
+      <form class="Form2" novalidate>
+        <div class="SignInWrapper text-center bg-secondary d-none">
           <h3 class="pt-3 text-white">Войти</h3>
           <label for="Login" class="form-label mt-3"
             ><h5 class="text-white">Логин или Электронная почта</h5></label
@@ -124,7 +115,7 @@
             style="width: 200px"
             required
           />
-          <div class="text-warning" id="Error_LoginAndEmail"></div>
+          <div class="text-warning ErrorLoginAndEmail"></div>
           <label for="Password" class="form-label mt-3"
             ><h5 class="text-white">Пароль</h5></label
           >
@@ -137,9 +128,9 @@
             style="width: 200px"
             required
           />
-          <div class="text-warning" id="Error_PasswordSignUp"></div>
+          <div class="text-warning ErrorPasswordSignUp"></div>
           <button class="btn btn-primary mt-3 mb-3" type="submit">Войти</button>
-          <div class="text-warning" id="Error_ServerForSignUp"></div>
+          <div class="text-warning Error_ServerForSignUp"></div>
         </div>
       </form>
     </div>
