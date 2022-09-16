@@ -12,7 +12,7 @@ const AllUser = JSON.parse(
   fs.readFileSync(`${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`)
 );
 
-const getHomePage = (req: any, res: any) => {
+const getHomePage = (req: Request, res: Response) => {
   console.log(req.cookies.username);
 
   if (searhUserCookie(req.cookies.username)) {
