@@ -89,7 +89,43 @@ https://getbootstrap.com/docs/5.2/layout/gutters/
 
 
 
-
+// if (searchLogin(Login)) {
+//   if (searchEmail(Email)) {
+//     AllUser.push(createNewUser(Login, Password, Email));
+//     fs.writeFile(
+//       `${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`,
+//       JSON.stringify(AllUser),
+//       (err: Error) => {
+//         if (err) {
+//           console.log(err);
+//         } else {
+//           return res
+//             .status(201)
+//             .cookie("username", `${Login}`, {
+//               maxAge: 180000,
+//             })
+//             .json({
+//               status: "SUCCESS",
+//               body: createNewUser(Login, Password, Email),
+//               message: "",
+//             });
+//         }
+//       }
+//     );
+//   } else {
+//     return res.status(404).json({
+//       status: "ERROR",
+//       body: {},
+//       message: "Такой Email уже зарегестрирован",
+//     });
+//   }
+// } else {
+//   return res.status(404).json({
+//     status: "ERROR",
+//     body: {},
+//     message: "Такой пользователь уже существует",
+//   });
+// }
 
 
 

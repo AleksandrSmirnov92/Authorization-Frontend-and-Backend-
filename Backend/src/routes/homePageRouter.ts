@@ -41,51 +41,48 @@ const postHomePage = (
   if (req.body.nameClassButton === "Sign_in") {
     console.log("Мы работаем с формой регистрации");
     let { Login, Password, Repeat_password, Email } = req.body.state;
-    if (Login && Password && Repeat_password && Email) {
-      if (searchLogin(Login)) {
-        if (searchEmail(Email)) {
-          AllUser.push(createNewUser(Login, Password, Email));
-          fs.writeFile(
-            `${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`,
-            JSON.stringify(AllUser),
-            (err: Error) => {
-              if (err) {
-                console.log(err);
-              } else {
-                return res
-                  .status(201)
-                  .cookie("username", `${Login}`, {
-                    maxAge: 180000,
-                  })
-                  .json({
-                    status: "SUCCESS",
-                    body: createNewUser(Login, Password, Email),
-                    message: "",
-                  });
-              }
-            }
-          );
-        } else {
-          return res.status(404).json({
-            status: "ERROR",
-            body: {},
-            message: "Такой Email уже зарегестрирован",
-          });
-        }
-      } else {
-        return res.status(404).json({
-          status: "ERROR",
-          body: {},
-          message: "Такой пользователь уже существует",
-        });
-      }
-    } else {
+    if (!(Login && Password && Repeat_password && Email)) {
       return res.status(404).json({
         status: "ERROR",
         body: {},
         message: "Заполните форму до конца",
       });
     }
+    if (!searchLogin(Login)) {
+      return res.status(404).json({
+        status: "ERROR",
+        body: {},
+        message: "Такой пользователь уже существует",
+      });
+    }
+    if (!searchEmail(Email)) {
+      return res.status(404).json({
+        status: "ERROR",
+        body: {},
+        message: "Такой Email уже зарегестрирован",
+      });
+    }
+    AllUser.push(createNewUser(Login, Password, Email));
+    fs.writeFile(
+      `${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`,
+      JSON.stringify(AllUser),
+      (err: Error) => {
+        if (err) {
+          console.log(err);
+        } else {
+          return res
+            .status(201)
+            .cookie("username", `${Login}`, {
+              maxAge: 180000,
+            })
+            .json({
+              status: "SUCCESS",
+              body: createNewUser(Login, Password, Email),
+              message: "",
+            });
+        }
+      }
+    );
   }
   if (req.body.nameClassButton === "Sign_up") {
     console.log("Мы работаем с формой входа");
@@ -94,7 +91,7 @@ const postHomePage = (
       console.log("Мы работаем с Email");
       for (let item of AllUser) {
         if (item.Email === Email.toLowerCase()) {
-          if (String(item.Password) === Password) {
+          if (String(item.Password === Password)) {
             return res
               .status(200)
               .cookie("username", `${item.Login}`, { maxAge: 180000 })
@@ -122,7 +119,8 @@ const postHomePage = (
       console.log("Мы работаем с Login");
       for (let item of AllUser) {
         if (item.Login === Login) {
-          if (String(item.Password) === Password) {
+          console.log(String(item.Password === Password));
+          if (String(item.Password === Password)) {
             return res
               .status(200)
               .cookie("username", `${item.Login}`, { maxAge: 180000 })
@@ -157,3 +155,41 @@ const postHomePage = (
 
 Router.route("/home").get(getHomePage).post(postHomePage);
 module.exports = Router;
+
+// if (searchLogin(Login)) {
+//   if (searchEmail(Email)) {
+//     AllUser.push(createNewUser(Login, Password, Email));
+//     fs.writeFile(
+//       `${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`,
+//       JSON.stringify(AllUser),
+//       (err: Error) => {
+//         if (err) {
+//           console.log(err);
+//         } else {
+//           return res
+//             .status(201)
+//             .cookie("username", `${Login}`, {
+//               maxAge: 180000,
+//             })
+//             .json({
+//               status: "SUCCESS",
+//               body: createNewUser(Login, Password, Email),
+//               message: "",
+//             });
+//         }
+//       }
+//     );
+//   } else {
+//     return res.status(404).json({
+//       status: "ERROR",
+//       body: {},
+//       message: "Такой Email уже зарегестрирован",
+//     });
+//   }
+// } else {
+//   return res.status(404).json({
+//     status: "ERROR",
+//     body: {},
+//     message: "Такой пользователь уже существует",
+//   });
+// }
