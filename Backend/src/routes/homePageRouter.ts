@@ -32,8 +32,9 @@ interface State {
   Password: string;
   Repeat_password: string;
   Email: string;
+  LoginOrEmail: string;
+  InputName: string;
 }
-
 const postHomePage = (
   req: Request<{}, {}, { nameClassButton: string; state: State }>,
   res: Response<{ status: string; body: {}; message: string }>
@@ -67,71 +68,106 @@ const postHomePage = (
   }
   if (req.body.nameClassButton === "Sign_up") {
     console.log("Мы работаем с формой входа");
-    let { Login, Email, Password } = req.body.state;
-    if (Email && Password) {
-      console.log("Мы работаем с Email");
-      for (let item of AllUser) {
-        if (item.Email === Email.toLowerCase()) {
-          if (String(item.Password === Password)) {
-            return res
-              .status(200)
-              .cookie("username", `${item.Login}`, { maxAge: 180000 })
-              .json({
-                status: "SUCCESS",
-                body: {},
-                message: `С возвращением ${item.Login}`,
-              });
-            // Доделать куки
-          } else {
-            return res.status(404).json({
-              status: "ERROR",
-              body: {},
-              message: "Неправильно введен Password",
-            });
-          }
-        }
-      }
-      return res.status(404).json({
-        status: "ERROR",
-        body: {},
-        message: "Неправильно введен Email",
-      });
-    } else if (Login && Password) {
-      console.log("Мы работаем с Login");
-      for (let item of AllUser) {
-        if (item.Login === Login) {
-          console.log(String(item.Password === Password));
-          if (String(item.Password === Password)) {
-            return res
-              .status(200)
-              .cookie("username", `${item.Login}`, { maxAge: 180000 })
-              .json({
-                status: "SUCCESS",
-                body: {},
-                message: `С возвращением ${item.Login}`,
-              });
-          } else {
-            return res.status(404).json({
-              status: "ERROR",
-              body: {},
-              message: "Неправильно введен Password ",
-            });
-          }
-        }
-      }
-      return res.status(404).json({
-        status: "ERROR",
-        body: {},
-        message: "Неправильно введен Login",
-      });
-    } else {
+    let { LoginOrEmail, InputName, Password } = req.body.state;
+    if (!(LoginOrEmail && Password)) {
       return res.status(404).json({
         status: "ERROR",
         body: {},
         message: "Ошибка заполнения формы",
       });
     }
+    console.log(LoginOrEmail, InputName);
+    console.log(searchEmailOrLogin(LoginOrEmail));
+    if (!searchEmailOrLogin(LoginOrEmail)) {
+      return res.status(404).json({
+        status: "ERROR",
+        body: {},
+        message: `Неправильно введен ${InputName}`,
+      });
+    }
+    console.log(searchPassword(LoginOrEmail, Password));
+    if (!searchPassword(LoginOrEmail, Password)) {
+      return res.status(404).json({
+        status: "ERROR",
+        body: {},
+        message: "Неправильно введен Password",
+      });
+    }
+    return res
+      .status(200)
+      .cookie("username", `${returnLogin(LoginOrEmail)}`, { maxAge: 180000 })
+      .json({
+        status: "SUCCESS",
+        body: {},
+        message: `С возвращением ${returnLogin(LoginOrEmail)}`,
+      });
   }
+
+  // let { Login, Email, Password } = req.body.state;
+  //   if (Email && Password) {
+  //     console.log("Мы работаем с Email");
+  //     for (let item of AllUser) {
+  //       if (item.Email === Email.toLowerCase()) {
+  //         if (String(item.Password === Password)) {
+  //           return res
+  //             .status(200)
+  //             .cookie("username", `${item.Login}`, { maxAge: 180000 })
+  //             .json({
+  //               status: "SUCCESS",
+  //               body: {},
+  //               message: `С возвращением ${item.Login}`,
+  //             });
+  //           // Доделать куки
+  //         } else {
+  //           return res.status(404).json({
+  //             status: "ERROR",
+  //             body: {},
+  //             message: "Неправильно введен Password",
+  //           });
+  //         }
+  //       }
+  //     }
+  //     return res.status(404).json({
+  //       status: "ERROR",
+  //       body: {},
+  //       message: "Неправильно введен Email",
+  //     });
+  //   } else if (Login && Password) {
+  //     console.log("Мы работаем с Login");
+  //     for (let item of AllUser) {
+  //       if (item.Login === Login) {
+  //         console.log(String(item.Password === Password));
+  //         if (String(item.Password === Password)) {
+  //           return res
+  //             .status(200)
+  //             .cookie("username", `${item.Login}`, { maxAge: 180000 })
+  //             .json({
+  //               status: "SUCCESS",
+  //               body: {},
+  //               message: `С возвращением ${item.Login}`,
+  //             });
+  //         } else {
+  //           return res.status(404).json({
+  //             status: "ERROR",
+  //             body: {},
+  //             message: "Неправильно введен Password ",
+  //           });
+  //         }
+  //       }
+  //     }
+  //     return res.status(404).json({
+  //       status: "ERROR",
+  //       body: {},
+  //       message: "Неправильно введен Login",
+  //     });
+  //   } else {
+  //     return res.status(404).json({
+  //       status: "ERROR",
+  //       body: {},
+  //       message: "Ошибка заполнения формы",
+  //     });
+  //   }
+  // }
 };
 
 Router.route("/home").get(getHomePage).post(postHomePage);
@@ -162,4 +198,32 @@ function addUserInData(
       }
     }
   );
+}
+function searchEmailOrLogin(LoginOrEmail: string) {
+  let massivValues: any = [];
+  for (let item of AllUser) {
+    massivValues = Object.values(item);
+    if (massivValues.includes(LoginOrEmail)) {
+      return massivValues.includes(LoginOrEmail);
+    }
+  }
+  console.log(massivValues);
+  return massivValues.includes(LoginOrEmail);
+}
+function searchPassword(LoginAndEmail: string, Password: string) {
+  let massivValues: any = [];
+  for (let item of AllUser) {
+    massivValues = Object.values(item);
+    if (massivValues.includes(LoginAndEmail)) {
+      return massivValues.includes(Password);
+    }
+  }
+  return massivValues.includes(Password);
+}
+function returnLogin(LoginOrEmail: string) {
+  for (let item of AllUser) {
+    if (Object.values(item).includes(LoginOrEmail)) {
+      return item.Login;
+    }
+  }
 }

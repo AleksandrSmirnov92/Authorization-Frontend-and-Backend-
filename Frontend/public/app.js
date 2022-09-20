@@ -28,8 +28,10 @@ let state = {
         Email: "",
     },
     valuesSignUp: {
-        Login: "",
-        Email: "",
+        // Login: "",
+        // Email: "",
+        LoginOrEmail: "",
+        InputName: "",
         Password: "",
     },
 };
@@ -151,15 +153,15 @@ function formValidationSignUp(LoginAndEmail, PasswordSignUp) {
         valuesTrueSignUp[0] = false;
     }
     else if (LoginAndEmail.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
-        state.valuesSignUp.Email = LoginAndEmail.value;
-        state.valuesSignUp.Login = "";
+        state.valuesSignUp.LoginOrEmail = LoginAndEmail.value;
+        state.valuesSignUp.InputName = "Email";
         valuesTrueSignUp[0] = true;
         errorLoginAndEmail.innerHTML = "";
         console.log("Вы ввели емэйл");
     }
     else if (!LoginAndEmail.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
-        state.valuesSignUp.Login = LoginAndEmail.value;
-        state.valuesSignUp.Email = "";
+        state.valuesSignUp.LoginOrEmail = LoginAndEmail.value;
+        state.valuesSignUp.InputName = "Login";
         valuesTrueSignUp[0] = true;
         errorLoginAndEmail.innerHTML = "";
         console.log("Вы ввели логин");
