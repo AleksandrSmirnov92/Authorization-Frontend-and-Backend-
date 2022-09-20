@@ -76,17 +76,17 @@ const postHomePage = (
         message: "Ошибка заполнения формы",
       });
     }
-    console.log(LoginOrEmail, InputName);
-    console.log(searchEmailOrLogin(LoginOrEmail));
-    if (!searchEmailOrLogin(LoginOrEmail)) {
+    // console.log(LoginOrEmail, InputName);
+    // console.log(searchEmailOrLogin(LoginOrEmail, InputName));
+    if (!searchEmailOrLogin(LoginOrEmail, InputName)) {
       return res.status(404).json({
         status: "ERROR",
         body: {},
         message: `Неправильно введен ${InputName}`,
       });
     }
-    console.log(searchPassword(LoginOrEmail, Password));
-    if (!searchPassword(LoginOrEmail, Password)) {
+    console.log(searchPassword(LoginOrEmail, InputName, Password));
+    if (searchPassword(LoginOrEmail, InputName, Password) === false) {
       return res.status(404).json({
         status: "ERROR",
         body: {},
@@ -95,11 +95,13 @@ const postHomePage = (
     }
     return res
       .status(200)
-      .cookie("username", `${returnLogin(LoginOrEmail)}`, { maxAge: 180000 })
+      .cookie("username", `${returnLogin(LoginOrEmail, InputName)}`, {
+        maxAge: 180000,
+      })
       .json({
         status: "SUCCESS",
         body: {},
-        message: `С возвращением ${returnLogin(LoginOrEmail)}`,
+        message: `С возвращением ${returnLogin(LoginOrEmail, InputName)}`,
       });
   }
 
@@ -199,31 +201,66 @@ function addUserInData(
     }
   );
 }
-function searchEmailOrLogin(LoginOrEmail: string) {
+function searchEmailOrLogin(LoginOrEmail: string, InputName: string) {
   let massivValues: any = [];
-  for (let item of AllUser) {
-    massivValues = Object.values(item);
-    if (massivValues.includes(LoginOrEmail)) {
-      return massivValues.includes(LoginOrEmail);
+  if (InputName === "Login") {
+    for (let item of AllUser) {
+      massivValues = Object.values(item);
+      if (massivValues.includes(LoginOrEmail)) {
+        return massivValues.includes(LoginOrEmail);
+      }
     }
   }
-  console.log(massivValues);
+  if (InputName === "Email") {
+    for (let item of AllUser) {
+      massivValues = Object.values(item);
+      if (massivValues.includes(LoginOrEmail.toLowerCase())) {
+        return massivValues.includes(LoginOrEmail.toLowerCase());
+      }
+    }
+  }
+  // console.log(massivValues);
   return massivValues.includes(LoginOrEmail);
 }
-function searchPassword(LoginAndEmail: string, Password: string) {
+
+function searchPassword(
+  LoginAndEmail: string,
+  InputName: string,
+  Password: string
+) {
   let massivValues: any = [];
-  for (let item of AllUser) {
-    massivValues = Object.values(item);
-    if (massivValues.includes(LoginAndEmail)) {
-      return massivValues.includes(Password);
+  if (InputName === "Login") {
+    for (let item of AllUser) {
+      massivValues = Object.values(item);
+      console.log(massivValues, Password);
+      if (massivValues.includes(LoginAndEmail)) {
+        return massivValues.includes(Password);
+      }
+    }
+  }
+  if (InputName === "Email") {
+    for (let item of AllUser) {
+      massivValues = Object.values(item);
+      if (massivValues.includes(LoginAndEmail.toLowerCase())) {
+        return massivValues.includes(Password);
+      }
     }
   }
   return massivValues.includes(Password);
 }
-function returnLogin(LoginOrEmail: string) {
-  for (let item of AllUser) {
-    if (Object.values(item).includes(LoginOrEmail)) {
-      return item.Login;
+function returnLogin(LoginOrEmail: string, InputName: string) {
+  if (InputName === "Login") {
+    for (let item of AllUser) {
+      if (Object.values(item).includes(LoginOrEmail)) {
+        return item.Login;
+      }
+    }
+  }
+  if (InputName === "Email") {
+    for (let item of AllUser) {
+      if (Object.values(item).includes(LoginOrEmail.toLowerCase())) {
+        return item.Login;
+      }
     }
   }
 }

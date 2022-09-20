@@ -2,13 +2,13 @@
   {
     "id": 0.0693672282762654,
     "Login": "Sasha",
-    "Password": 12345,
+    "Password": "12345",
     "Email": "ryan00@mail.ru"
   },
   {
     "id": 0.0693672282762655,
     "Login": "Kostya",
-    "Password": 123,
+    "Password": "123",
     "Email": "kostya@mail.ru"
   }
 ]
