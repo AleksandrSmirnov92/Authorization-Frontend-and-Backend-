@@ -7,6 +7,9 @@ const {
   createNewUser,
   searchLogin,
   searchEmail,
+  searchEmailOrLogin,
+  searchPassword,
+  returnLogin,
 } = require("./func");
 const AllUser = JSON.parse(
   fs.readFileSync(`${path.join(__dirname, "../../dev-data", "/AuthUser.json")}`)
@@ -76,8 +79,6 @@ const postHomePage = (
         message: "Ошибка заполнения формы",
       });
     }
-    // console.log(LoginOrEmail, InputName);
-    // console.log(searchEmailOrLogin(LoginOrEmail, InputName));
     if (!searchEmailOrLogin(LoginOrEmail, InputName)) {
       return res.status(404).json({
         status: "ERROR",
@@ -85,7 +86,6 @@ const postHomePage = (
         message: `Неправильно введен ${InputName}`,
       });
     }
-    console.log(searchPassword(LoginOrEmail, InputName, Password));
     if (searchPassword(LoginOrEmail, InputName, Password) === false) {
       return res.status(404).json({
         status: "ERROR",
@@ -104,72 +104,6 @@ const postHomePage = (
         message: `С возвращением ${returnLogin(LoginOrEmail, InputName)}`,
       });
   }
-
-  // let { Login, Email, Password } = req.body.state;
-  //   if (Email && Password) {
-  //     console.log("Мы работаем с Email");
-  //     for (let item of AllUser) {
-  //       if (item.Email === Email.toLowerCase()) {
-  //         if (String(item.Password === Password)) {
-  //           return res
-  //             .status(200)
-  //             .cookie("username", `${item.Login}`, { maxAge: 180000 })
-  //             .json({
-  //               status: "SUCCESS",
-  //               body: {},
-  //               message: `С возвращением ${item.Login}`,
-  //             });
-  //           // Доделать куки
-  //         } else {
-  //           return res.status(404).json({
-  //             status: "ERROR",
-  //             body: {},
-  //             message: "Неправильно введен Password",
-  //           });
-  //         }
-  //       }
-  //     }
-  //     return res.status(404).json({
-  //       status: "ERROR",
-  //       body: {},
-  //       message: "Неправильно введен Email",
-  //     });
-  //   } else if (Login && Password) {
-  //     console.log("Мы работаем с Login");
-  //     for (let item of AllUser) {
-  //       if (item.Login === Login) {
-  //         console.log(String(item.Password === Password));
-  //         if (String(item.Password === Password)) {
-  //           return res
-  //             .status(200)
-  //             .cookie("username", `${item.Login}`, { maxAge: 180000 })
-  //             .json({
-  //               status: "SUCCESS",
-  //               body: {},
-  //               message: `С возвращением ${item.Login}`,
-  //             });
-  //         } else {
-  //           return res.status(404).json({
-  //             status: "ERROR",
-  //             body: {},
-  //             message: "Неправильно введен Password ",
-  //           });
-  //         }
-  //       }
-  //     }
-  //     return res.status(404).json({
-  //       status: "ERROR",
-  //       body: {},
-  //       message: "Неправильно введен Login",
-  //     });
-  //   } else {
-  //     return res.status(404).json({
-  //       status: "ERROR",
-  //       body: {},
-  //       message: "Ошибка заполнения формы",
-  //     });
-  //   }
-  // }
 };
 
 Router.route("/home").get(getHomePage).post(postHomePage);
@@ -200,67 +134,4 @@ function addUserInData(
       }
     }
   );
-}
-function searchEmailOrLogin(LoginOrEmail: string, InputName: string) {
-  let massivValues: any = [];
-  if (InputName === "Login") {
-    for (let item of AllUser) {
-      massivValues = Object.values(item);
-      if (massivValues.includes(LoginOrEmail)) {
-        return massivValues.includes(LoginOrEmail);
-      }
-    }
-  }
-  if (InputName === "Email") {
-    for (let item of AllUser) {
-      massivValues = Object.values(item);
-      if (massivValues.includes(LoginOrEmail.toLowerCase())) {
-        return massivValues.includes(LoginOrEmail.toLowerCase());
-      }
-    }
-  }
-  // console.log(massivValues);
-  return massivValues.includes(LoginOrEmail);
-}
-
-function searchPassword(
-  LoginAndEmail: string,
-  InputName: string,
-  Password: string
-) {
-  let massivValues: any = [];
-  if (InputName === "Login") {
-    for (let item of AllUser) {
-      massivValues = Object.values(item);
-      console.log(massivValues, Password);
-      if (massivValues.includes(LoginAndEmail)) {
-        return massivValues.includes(Password);
-      }
-    }
-  }
-  if (InputName === "Email") {
-    for (let item of AllUser) {
-      massivValues = Object.values(item);
-      if (massivValues.includes(LoginAndEmail.toLowerCase())) {
-        return massivValues.includes(Password);
-      }
-    }
-  }
-  return massivValues.includes(Password);
-}
-function returnLogin(LoginOrEmail: string, InputName: string) {
-  if (InputName === "Login") {
-    for (let item of AllUser) {
-      if (Object.values(item).includes(LoginOrEmail)) {
-        return item.Login;
-      }
-    }
-  }
-  if (InputName === "Email") {
-    for (let item of AllUser) {
-      if (Object.values(item).includes(LoginOrEmail.toLowerCase())) {
-        return item.Login;
-      }
-    }
-  }
 }
