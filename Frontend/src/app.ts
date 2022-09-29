@@ -1,32 +1,44 @@
-const SignUp_Button = document.querySelector(".button_Sign_up")!;
-const SignIn_Button = document.querySelector(".button_Sign_in")!;
-const FormSignUp = document.querySelector(".SignUp_Wrapper")!;
-const FormSignIn = document.querySelector(".SignIn_Wrapper")!;
-const Error_Login = document.querySelector("#Error_Login")!;
-const Error_Password = document.querySelector("#Error_Password")!;
-const Error_Repeat_Password = document.querySelector("#Error_Repeat_Password")!;
-const Error_Email = document.querySelector("#Error_Email")!;
-const Error_LoginAndEmail = document.querySelector("#Error_LoginAndEmail")!;
-const Error_PasswordSignUp = document.querySelector("#Error_PasswordSignUp")!;
-const Error_Server = document.querySelector("#Error_Server")!;
-const Error_ServerForSignUp = document.querySelector("#Error_ServerForSignUp")!;
-const button_submit = document.querySelector("#Form1")!;
-const button_submit2 = document.querySelector("#Form2")!;
+const signUpButton = document.querySelector(".ButtonSignUp")!;
+const signInButton = document.querySelector(".ButtonSignIn")!;
+const formSignUp = document.querySelector(".SignUpWrapper")!;
+const formSignIn = document.querySelector(".SignInWrapper")!;
+const errorLogin = document.querySelector(".ErrorLogin")!;
+const errorPassword = document.querySelector(".ErrorPassword")!;
+const errorRepeatPassword = document.querySelector(".ErrorRepeatPassword")!;
+const errorEmail = document.querySelector(".ErrorEmail")!;
+const errorLoginAndEmail = document.querySelector(".ErrorLoginAndEmail")!;
+const errorPasswordSignUp = document.querySelector(".ErrorPasswordSignUp")!;
+const errorServer = document.querySelector(".ErrorServer")!;
+const errorServerForSignUp = document.querySelector(".ErrorServerForSignUp")!;
+const formOneSubmit = document.querySelector(".Form1")!;
+const formTwoSubmit = document.querySelector(".Form2")!;
+const login = document.querySelector(".Login") as HTMLInputElement;
+const password = document.querySelector(".Password") as HTMLInputElement;
+const repeatPassword = document.querySelector(
+  ".RepeatPassword"
+) as HTMLInputElement;
+const email = document.querySelector(".Email") as HTMLInputElement;
+const loginAndEmail = document.querySelector(
+  ".LoginAndEmail"
+) as HTMLInputElement;
+const passwordSignUp = document.querySelector(
+  ".PasswordSignUp"
+) as HTMLInputElement;
 interface State {
   nameClassButton: string;
   values: {
     Login: string;
-    Password: number | string;
-    Repeat_password: number | string;
+    Password: string;
+    Repeat_password: string;
     Email: string;
   };
   valuesSignUp: {
-    Login: string;
-    Email: string;
-    Password: string | number;
+    // Login: string;
+    // Email: string;
+    LoginOrEmail: string;
+    InputName: string;
+    Password: string;
   };
-  valuesTrueSignIn: boolean[];
-  valuesTrueSignUp: boolean[];
 }
 let state: State = {
   nameClassButton: "",
@@ -37,80 +49,58 @@ let state: State = {
     Email: "",
   },
   valuesSignUp: {
-    Login: "",
-    Email: "",
+    // Login: "",
+    // Email: "",
+    LoginOrEmail: "",
+    InputName: "",
     Password: "",
   },
-  valuesTrueSignIn: [false, false, false, false],
-  valuesTrueSignUp: [false, false],
 };
 // document.cookie = "username=Sasha";
-SignIn_Button.addEventListener("click", () => {
+signInButton.addEventListener("click", () => {
   state.nameClassButton = "Sign_in";
   console.log("Зарегестрироваться", state.nameClassButton);
   activate_SignIn_or_Sign_up();
 });
-SignUp_Button.addEventListener("click", () => {
+signUpButton.addEventListener("click", () => {
   state.nameClassButton = "Sign_up";
   console.log("Войти", state.nameClassButton);
   activate_SignIn_or_Sign_up();
 });
 
-button_submit.addEventListener("submit", (e: Event) => {
+formOneSubmit.addEventListener("submit", (e: Event) => {
   console.log("отправить");
   e.preventDefault();
-  const Login = document.querySelector("[name = 'Login']") as HTMLInputElement;
-  const Password = document.querySelector(
-    "[name = 'Password']"
-  ) as HTMLInputElement;
-  const Repeat_password = document.querySelector(
-    "[name = 'RepeatPassword']"
-  ) as HTMLInputElement;
-  const Email = document.querySelector("[name = 'Email']") as HTMLInputElement;
-
-  formValidationSignIn(Login, Password, Repeat_password, Email);
-  let include: boolean = state.valuesTrueSignIn.includes(false);
-  if (include === false) {
-    (Login.value = ""),
-      (Password.value = ""),
-      (Repeat_password.value = ""),
-      (Email.value = "");
-    sendPostSignIn();
-    console.log("форма отправилась SignIn");
-  } else {
-    console.log("Заполните форму до конца");
+  if (
+    formValidationSignIn(login, password, repeatPassword, email).includes(false)
+  ) {
+    return console.log("Заполните форму до конца");
   }
+  resetForm(state.nameClassButton);
+  sendPostRequest(state.nameClassButton, state.values);
+  console.log("форма отправилась SignIn");
 });
-button_submit2.addEventListener("submit", (e: Event) => {
+
+formTwoSubmit.addEventListener("submit", (e: Event) => {
   e.preventDefault();
   console.log("Вход");
-  const LoginAndEmail = document.querySelector(
-    "[name= 'LoginAndPassword']"
-  ) as HTMLInputElement;
-  const PasswordSignUp = document.querySelector(
-    "[name = 'PasswordSignUp']"
-  ) as HTMLInputElement;
-  formValidationSignUp(LoginAndEmail, PasswordSignUp);
-  let include: boolean = state.valuesTrueSignUp.includes(false);
-  if (include === false) {
-    (LoginAndEmail.value = ""), (PasswordSignUp.value = "");
-    sendPostSignUp();
-    console.log("форма отправилась SignUp");
-  } else {
-    console.log("Заполните форму до конца");
+  if (formValidationSignUp(loginAndEmail, passwordSignUp).includes(false)) {
+    return console.log("Заполните форму до конца");
   }
-  console.log(state.valuesSignUp);
+  resetForm(state.nameClassButton);
+  sendPostRequest(state.nameClassButton, state.valuesSignUp);
+  console.log("форма отправилась SignUp");
 });
 
 // --------------------------------------------------Function-----------------------------------------------------
 function activate_SignIn_or_Sign_up(): void {
   if (state.nameClassButton === "Sign_up") {
-    FormSignIn.classList.remove("d-none");
-    FormSignUp.classList.add("d-none");
+    formSignIn.classList.remove("d-none");
+    formSignUp.classList.add("d-none");
   }
   if (state.nameClassButton === "Sign_in") {
-    FormSignUp.classList.remove("d-none");
-    FormSignIn.classList.add("d-none");
+    formSignUp.classList.remove("d-none");
+    formSignIn.classList.add("d-none");
   }
 }
 //----------------------------------------------- formValidationSignIn
@@ -119,103 +109,120 @@ function formValidationSignIn(
   Password: HTMLInputElement,
   Repeat_password: HTMLInputElement,
   Email: HTMLInputElement
-): void {
+): boolean[] {
   let message: string = "";
+  let valuesTrueSignIn: boolean[] = [false, false, false, false];
   // SignIn
   // Login
   if (Login.value === "" || Login.value === null) {
     message = "Введите логин";
-    Error_Login.innerHTML = `<span>${message}</span>`;
-    state.valuesTrueSignIn[0] = false;
+    errorLogin.innerHTML = `<span>${message}</span>`;
+    valuesTrueSignIn[0] = false;
   } else if (Login.value.length <= 4) {
     message = "Логин слишком короткий";
-    Error_Login.innerHTML = `<span>${message}</span>`;
-    state.valuesTrueSignIn[0] = false;
+    errorLogin.innerHTML = `<span>${message}</span>`;
+    valuesTrueSignIn[0] = false;
   } else {
     state.values.Login = Login.value;
-    Error_Login.innerHTML = ``;
-    state.valuesTrueSignIn[0] = true;
+    errorLogin.innerHTML = ``;
+    valuesTrueSignIn[0] = true;
   }
   // Password
   if (Password.value === "" || Password.value === null) {
     message = "Введите пароль";
-    Error_Password.innerHTML = `<span>${message}</span>`;
-    state.valuesTrueSignIn[1] = false;
+    errorPassword.innerHTML = `<span>${message}</span>`;
+    valuesTrueSignIn[1] = false;
   } else {
     state.values.Password = Password.value;
-    Error_Password.innerHTML = "";
-    state.valuesTrueSignIn[1] = true;
+    errorPassword.innerHTML = "";
+    valuesTrueSignIn[1] = true;
   }
   // Repeat password
   if (Repeat_password.value === "" || Repeat_password.value === null) {
     message = "Повторите пароль";
-    Error_Repeat_Password.innerHTML = `<span>${message}</span>`;
-    state.valuesTrueSignIn[2] = false;
+    errorRepeatPassword.innerHTML = `<span>${message}</span>`;
+    valuesTrueSignIn[2] = false;
   } else if (Repeat_password.value !== Password.value) {
     message = "Пароль не совпадает";
-    Error_Repeat_Password.innerHTML = `<span>${message}</span>`;
-    state.valuesTrueSignIn[2] = false;
+    errorRepeatPassword.innerHTML = `<span>${message}</span>`;
+    valuesTrueSignIn[2] = false;
   } else {
     state.values.Repeat_password = Repeat_password.value;
-    Error_Repeat_Password.innerHTML = "";
-    state.valuesTrueSignIn[2] = true;
+    errorRepeatPassword.innerHTML = "";
+    valuesTrueSignIn[2] = true;
   }
   // Email
   if (Email.value === "" || Email.value === null) {
     message = "Напишите электронную почту";
-    Error_Email.innerHTML = `<span>${message}</span>`;
-    state.valuesTrueSignIn[3] = false;
+    errorEmail.innerHTML = `<span>${message}</span>`;
+    valuesTrueSignIn[3] = false;
   } else if (!Email.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
     message = "Нерпавильно введен Email";
-    Error_Email.innerHTML = `<span>${message}</span>`;
-    state.valuesTrueSignIn[3] = false;
+    errorEmail.innerHTML = `<span>${message}</span>`;
+    valuesTrueSignIn[3] = false;
   } else {
     state.values.Email = Email.value;
-    Error_Email.innerHTML = "";
-    state.valuesTrueSignIn[3] = true;
+    errorEmail.innerHTML = "";
+    valuesTrueSignIn[3] = true;
   }
+  return valuesTrueSignIn;
 }
 //----------------------------------------------- formValidationSignUp
 function formValidationSignUp(
   LoginAndEmail: HTMLInputElement,
   PasswordSignUp: HTMLInputElement
-): void {
+): boolean[] {
   let message: string = "";
+  let valuesTrueSignUp: boolean[] = [false, false];
   if (LoginAndEmail.value === "" || LoginAndEmail.value === null) {
     message = "вы ничего не ввели";
-    Error_LoginAndEmail.innerHTML = `<span>${message}</span>`;
-    state.valuesTrueSignUp[0] = false;
+    errorLoginAndEmail.innerHTML = `<span>${message}</span>`;
+    valuesTrueSignUp[0] = false;
   } else if (LoginAndEmail.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
-    state.valuesSignUp.Email = LoginAndEmail.value;
-    state.valuesSignUp.Login = "";
-    state.valuesTrueSignUp[0] = true;
-    Error_LoginAndEmail.innerHTML = "";
+    state.valuesSignUp.LoginOrEmail = LoginAndEmail.value;
+    state.valuesSignUp.InputName = "Email";
+    valuesTrueSignUp[0] = true;
+    errorLoginAndEmail.innerHTML = "";
     console.log("Вы ввели емэйл");
   } else if (!LoginAndEmail.value.match(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/)) {
-    state.valuesSignUp.Login = LoginAndEmail.value;
-    state.valuesSignUp.Email = "";
-    state.valuesTrueSignUp[0] = true;
-    Error_LoginAndEmail.innerHTML = "";
+    state.valuesSignUp.LoginOrEmail = LoginAndEmail.value;
+    state.valuesSignUp.InputName = "Login";
+    valuesTrueSignUp[0] = true;
+    errorLoginAndEmail.innerHTML = "";
     console.log("Вы ввели логин");
   }
   if (PasswordSignUp.value === "" || PasswordSignUp === null) {
     message = "Введите пароль";
-    Error_PasswordSignUp.innerHTML = `<span>${message}</span>`;
-    state.valuesTrueSignUp[1] = false;
+    errorPasswordSignUp.innerHTML = `<span>${message}</span>`;
+    valuesTrueSignUp[1] = false;
   } else {
     state.valuesSignUp.Password = PasswordSignUp.value;
-    state.valuesTrueSignUp[1] = true;
-    Error_PasswordSignUp.innerHTML = "";
+    valuesTrueSignUp[1] = true;
+    errorPasswordSignUp.innerHTML = "";
   }
+
+  return valuesTrueSignUp;
 }
-// ---------------------------------------------signUp
-function sendPostSignUp() {
+
+type StateFormOne = {
+  Login: string;
+  Password: string;
+  Repeat_password: string;
+  Email: string;
+};
+type StateFormTwo = {
+  LoginOrEmail: string;
+  InputName: string;
+  Password: string;
+};
+type StateForPost = StateFormOne | StateFormTwo;
+function sendPostRequest(nameClassButton: string, state: StateForPost) {
   fetch("http://localhost:3000/home", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      nameClassButton: state.nameClassButton,
-      state: state.valuesSignUp,
+      nameClassButton: nameClassButton,
+      state: state,
     }),
   })
     .then((responce) => responce.json())
@@ -226,34 +233,29 @@ function sendPostSignUp() {
         }, 1000);
       } else {
         let message: string = responce.message;
-        Error_ServerForSignUp.innerHTML = `<h5>${message}</h5>`;
-        setTimeout(() => {
-          Error_ServerForSignUp.innerHTML = "";
-        }, 2000);
+        if (nameClassButton === "Sign_in") {
+          errorServer.innerHTML = `<h5>${message}</h5>`;
+          setTimeout(() => {
+            errorServer.innerHTML = ``;
+          }, 2000);
+        }
+        if (nameClassButton === "Sign_up") {
+          errorServerForSignUp.innerHTML = `<h5>${message}</h5>`;
+          setTimeout(() => {
+            errorServerForSignUp.innerHTML = ``;
+          }, 2000);
+        }
       }
     });
 }
-function sendPostSignIn() {
-  fetch("http://localhost:3000/home", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      nameClassButton: state.nameClassButton,
-      state: state.values,
-    }),
-  })
-    .then((responce) => responce.json())
-    .then((responce) => {
-      if (responce.status === "SUCCESS") {
-        setTimeout(() => {
-          window.location.href = "http://localhost:3000/home";
-        }, 1000);
-      } else {
-        let message: string = responce.message;
-        Error_Server.innerHTML = `<h5>${message}</h5>`;
-        setTimeout(() => {
-          Error_Server.innerHTML = ``;
-        }, 2000);
-      }
-    });
+function resetForm(nameClassButton: string) {
+  if (nameClassButton === "Sign_in") {
+    (login.value = ""),
+      (password.value = ""),
+      (repeatPassword.value = ""),
+      (email.value = "");
+  }
+  if (nameClassButton === "Sign_up") {
+    (loginAndEmail.value = ""), (passwordSignUp.value = "");
+  }
 }
